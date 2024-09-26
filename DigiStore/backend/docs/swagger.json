@@ -1,0 +1,45 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0",
+      "title": "Distributed File Storage API",
+      "description": "This is a sample server for a file storage API."
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+      "/upload": {
+        "post": {
+          "tags": ["files"],
+          "summary": "Upload File",
+          "description": "Upload a file and split it into multiple parts.",
+          "parameters": [{
+            "name": "file",
+            "in": "formData",
+            "required": true,
+            "type": "file"
+          }],
+          "responses": {
+            "200": {
+              "description": "File uploaded successfully",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "No file is received"
+            },
+            "500": {
+              "description": "File splitting failed"
+            }
+          }
+        }
+      }
+    }
+  }
+  

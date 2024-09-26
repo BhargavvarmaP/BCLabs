@@ -1,0 +1,80 @@
+swagger: "2.0"
+info:
+  title: Distributed File Storage API
+  version: 1.0
+  description: This is a sample server for a file storage API.
+host: localhost:8080
+basePath: /
+schemes:
+  - http
+paths:
+  /upload:
+    post:
+      tags:
+        - files
+      summary: Upload File
+      description: Upload a file and split it into multiple parts.
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: file
+          in: formData
+          required: true
+          type: file
+      responses:
+        200:
+          description: File uploaded successfully
+          schema:
+            type: object
+            properties:
+              file_id:
+                type: string
+        400:
+          description: No file is received
+        500:
+          description: File splitting failed
+  /files:
+    get:
+      tags:
+        - files
+      summary: Get Uploaded Files Data
+      description: Retrieve the list of uploaded files.
+      responses:
+        200:
+          description: A list of uploaded files
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/File'
+        500:
+          description: Error retrieving files
+  /download/{id}:
+    get:
+      tags:
+        - files
+      summary: Download File
+      description: Download a file by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: File downloaded successfully
+          schema:
+            type: string
+        404:
+          description: File not found
+        500:
+          description: Error retrieving file chunks
+definitions:
+  File:
+    type: object
+    properties:
+      FileID:
+        type: string
+      ChunkID:
+        type: integer
+      ChunkContent:
+        type: string
